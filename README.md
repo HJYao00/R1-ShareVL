@@ -30,7 +30,7 @@
 [Jiaxing Huang](https://jxhuang0508.github.io)<sup>1✉️</sup>
 
 
-<sup>1</sup>[Nanyang Technological University](https://www.ntu.edu.sg/), <sup>2</sup>[ByteDance](), <sup>3</sup>[Tsinghua University](https://www.tsinghua.edu.cn/en/), <sup>4</sup>[SYSU](https://www.sysu.edu.cn/sysuen/), <sup>5</sup>[USYD](https://www.sysu.edu.cn/sysuen/)
+<sup>1</sup>[Nanyang Technological University](https://www.ntu.edu.sg/), <sup>2</sup>[ByteDance](), <sup>3</sup>[Tsinghua University](https://www.tsinghua.edu.cn/en/), <sup>4</sup>[BUPT](), <sup>5</sup>[USYD](https://www.sysu.edu.cn/sysuen/)
 
 <sup>*</sup>Equal Contribution,       <sup>✉️</sup>Corresponding Author
 
