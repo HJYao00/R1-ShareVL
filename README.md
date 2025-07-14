@@ -39,9 +39,39 @@
 
 
 ## News
+- [x] **`May 23, 2025.`** We release our [ShareGRPO Training code](), [52K Training Data]() and [R1-ShareVL-7B Model]()!
 - [x] **`May 23, 2025.`** We release our paper in [arxiv](https://arxiv.org/abs/2505.16673).
 
 
+## Training
+
+### Installation
+```bash
+git clone https://github.com/hiyouga/EasyR1.git
+cd R1-ShareVL
+pip install -e .
+```
+### GRPO Training
+
+```bash
+bash examples/qwen2_5_vl_7b_sharegrpo.sh
+```
+
+### Merge Checkpoint in Hugging Face Format
+
+```bash
+python3 scripts/model_merger.py --local_dir checkpoints/easy_r1/exp_name/global_step_1/actor
+```
+
+## Evaluation
+We evaluate R1-ShareVL using [VLMEvalKit](https://github.com/open-compass/VLMEvalKit)! Please make sure to include a thinking prompt after the question [here](https://github.com/open-compass/VLMEvalKit/blob/main/vlmeval/vlm/qwen2_vl/model.py#L342).
+
+```bash
+R1_PROMPT = r"""You FIRST think about the reasoning process as an internal monologue and then provide the final answer.
+ The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \boxed{}."""
+
+item = {'type': 'text', 'text': s['value'] + " " + R1_PROMPT}
+```
 
 ## Citation
 If you find this repository is useful, please star🌟 this repo and cite🖇️ our paper.
@@ -55,3 +85,8 @@ If you find this repository is useful, please star🌟 this repo and cite🖇️
       primaryClass={cs.CV},
 }
 ```
+
+## Acknowledgment
+Our work is primarily based on the following codebases. We are sincerely grateful for their work.
+- [EasyR1](https://github.com/hiyouga/EasyR1): We use EasyR1 to fine-tune R1-ShareVL Models.
+- [VLMEvalKit](https://github.com/open-compass/VLMEvalKit): We use VLMEvalKit for evaluation.
