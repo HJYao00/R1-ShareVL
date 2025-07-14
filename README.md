@@ -39,7 +39,7 @@
 
 
 ## News
-- [x] **`May 23, 2025.`** We release our [ShareGRPO Training code](), [52K Training Data]() and [R1-ShareVL-7B Model]()!
+- [x] **`Jul 15, 2025.`** We release our [ShareGRPO Training code](), [52K Training Data]() and [R1-ShareVL-7B Model]()!
 - [x] **`May 23, 2025.`** We release our paper in [arxiv](https://arxiv.org/abs/2505.16673).
 
 
