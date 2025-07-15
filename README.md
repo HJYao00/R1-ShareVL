@@ -36,21 +36,28 @@
 </div>
 
 
-## News
+## 🎙️ News
 - [x] **`Jul 15, 2025.`** We release our [ShareGRPO Training code](), [52K Training Data]() and [R1-ShareVL-7B Model]()!
 - [x] **`May 23, 2025.`** We release our paper in [arxiv](https://arxiv.org/abs/2505.16673).
 
 
-## News
+## 💡 About R1-ShareVL
+We introduce Share-GRPO, a novel reinforcement learning framework for MLLMs that addresses the challenges of sparse rewards and advantage vanishing in reasoning tasks. For a given question, Share-GRPO first applies semantically consistent transformations to generate a set of varied but semantically equivalent questions, thereby expanding the question space. It then encourages the MLLM to explore diverse reasoning paths across this expanded space and facilitates the sharing of discovered reasoning trajectories and their rewards among these question variants during the reinforcement learning process. This approach enables more effective exploration, denser reward signals, and more robust training. 
 
-## Training
+<div align=center>
+<img width="600" alt="image" src="figure/sharegrpo.png">
+</div>
+
+## 🚀 Training
+
 
 ### Installation
 ```bash
-git clone https://github.com/hiyouga/EasyR1.git
+git clone https://github.com/HJYao00/R1-ShareVL.git
 cd R1-ShareVL
 pip install -e .
 ```
+
 ### GRPO Training
 
 ```bash
@@ -63,7 +70,7 @@ bash examples/qwen2_5_vl_7b_sharegrpo.sh
 python3 scripts/model_merger.py --local_dir checkpoints/easy_r1/exp_name/global_step_1/actor
 ```
 
-## Evaluation
+## 🚗 Evaluation
 We evaluate R1-ShareVL using [VLMEvalKit](https://github.com/open-compass/VLMEvalKit)! Please make sure to include a thinking prompt after the question [here](https://github.com/open-compass/VLMEvalKit/blob/main/vlmeval/vlm/qwen2_vl/model.py#L342).
 
 ```bash
@@ -73,7 +80,7 @@ R1_PROMPT = r"""You FIRST think about the reasoning process as an internal monol
 item = {'type': 'text', 'text': s['value'] + " " + R1_PROMPT}
 ```
 
-## Citation
+## 🔗 Citation
 If you find this repository is useful, please star🌟 this repo and cite🖇️ our paper.
 ```bibtex
 @misc{yao2025r1sharevl,
@@ -86,7 +93,7 @@ If you find this repository is useful, please star🌟 this repo and cite🖇️
 }
 ```
 
-## Acknowledgment
+## 🙏 Acknowledgment
 Our work is primarily based on the following codebases. We are sincerely grateful for their work.
 - [EasyR1](https://github.com/hiyouga/EasyR1): We use EasyR1 to fine-tune R1-ShareVL Models.
 - [VLMEvalKit](https://github.com/open-compass/VLMEvalKit): We use VLMEvalKit for evaluation.
