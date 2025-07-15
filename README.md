@@ -41,6 +41,8 @@
 - [x] **`May 23, 2025.`** We release our paper in [arxiv](https://arxiv.org/abs/2505.16673).
 
 
+## News
+
 ## Training
 
 ### Installation
