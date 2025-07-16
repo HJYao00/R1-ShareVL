@@ -1,77 +1,64 @@
-# EasyR1: An Efficient, Scalable, Multi-Modality RL Training Framework
+<div align="center">
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/hiyouga/EasyR1)](https://github.com/hiyouga/EasyR1/stargazers)
-[![Twitter](https://img.shields.io/twitter/follow/llamafactory_ai)](https://twitter.com/llamafactory_ai)
+<h1> R1-ShareVL: Incentivizing Reasoning Capability of Multimodal Large Language Models via Share-GRPO </h1>
 
-This project is a clean fork of the original [veRL](https://github.com/volcengine/verl) project to support vision language models, we thank all the authors for providing such a high-performance RL training framework.
+<h5 align="center"> If you find this project useful, please give us a star🌟.
 
-EasyR1 is efficient and scalable due to the design of **[HybirdEngine](https://arxiv.org/abs/2409.19256)** and the latest release of **[vLLM](https://github.com/vllm-project/vllm)**'s SPMD mode.
+<h5 align="center"> 
 
-## Features
+<a href='https://arxiv.org/abs/2505.16673'><img src='https://img.shields.io/badge/Paper-Arxiv-red'></a>
+<a href='https://huggingface.co/HuanjinYao/R1-ShareVL-7B'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue'>
+<a href='https://huggingface.co/datasets/HuanjinYao/R1-ShareVL-52K'><img src='https://img.shields.io/badge/Dataset-Huggingface-yellow'>
+<!--<a href='https://huggingface.co/collections/HuanjinYao/denseconnector-66500e173fc8c9f05dc98dea'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue'></a>
+[![zhihu](https://img.shields.io/badge/-知乎-000000?logo=zhihu&logoColor=0084FF)](https://zhuanlan.zhihu.com/p/700000183)
+<a href='https://huggingface.co/spaces/HuanjinYao/DenseConnector-v1.5-8B'><img src='https://img.shields.io/badge/🤗-Open%20In%20Spaces-blue.svg'></a>-->
 
-- Supported models
-  - Llama3/Qwen2/Qwen2.5 language models
-  - Qwen2/Qwen2.5-VL vision language models
-  - DeepSeek-R1 distill models
 
-- Supported algorithms
-  - GRPO
-  - Reinforce++
-  - ReMax
-  - RLOO
+[Huanjin Yao](https://scholar.google.com/citations?user=pDtsCBQAAAAJ&hl=zh-CN)<sup>2,3*</sup>,
+[Qixiang Yin](https://jxhuang0508.github.io/)<sup>4*</sup>,
+[Jingyi Zhang]()<sup>1</sup>,
+[Min Yang]()<sup>2</sup>,
+[Yibo Wang]()<sup>3</sup>,
+[Wenhao Wu]()<sup>5</sup>,
 
-- Supported datasets
-  - Any text, vision-text dataset in a [specific format](#custom-dataset)
+[Fei Su]()<sup>4</sup>,
+[Li Shen]()<sup>1</sup>,
+[Minghui Qiu]()<sup>2</sup>,
+[Dacheng Tao]()<sup>1</sup>
+[Jiaxing Huang](https://jxhuang0508.github.io)<sup>1✉️</sup>
 
-- Supported tricks
-  - Padding-free training
-  - Resuming from checkpoint
-  - Wandb & SwanLab & Mlflow & Tensorboard tracking
 
-## Requirements
+<sup>1</sup>[Nanyang Technological University](https://www.ntu.edu.sg/), <sup>2</sup>[ByteDance](), <sup>3</sup>[Tsinghua University](https://www.tsinghua.edu.cn/en/), <sup>4</sup>[BUPT](), <sup>5</sup>[USYD](https://www.sysu.edu.cn/sysuen/)
 
-### Software Requirements
+<sup>*</sup>Equal Contribution,       <sup>✉️</sup>Corresponding Author
 
-- Python 3.9+
-- transformers>=4.51.0
-- flash-attn>=2.4.3
-- vllm>=0.8.3
+</h5>
+</div>
 
-We provide a [Dockerfile](./Dockerfile) to easily build environments.
 
-We recommend using the [pre-built docker image](https://hub.docker.com/r/hiyouga/verl) in EasyR1.
+## 🎙️ News
+- [x] **`Jul 15, 2025.`** We release our [ShareGRPO Training code](), [52K Training Data]() and [R1-ShareVL-7B Model]()!
+- [x] **`May 23, 2025.`** We release our paper in [arxiv](https://arxiv.org/abs/2505.16673).
 
-```bash
-docker pull hiyouga/verl:ngc-th2.6.0-cu126-vllm0.8.3-flashinfer0.2.2-cxx11abi0
-```
 
-### Hardware Requirements
+## 💡 About R1-ShareVL
+We introduce Share-GRPO, a novel reinforcement learning framework for MLLMs that addresses the challenges of sparse rewards and advantage vanishing in reasoning tasks. For a given question, Share-GRPO first applies semantically consistent transformations to generate a set of varied but semantically equivalent questions, thereby expanding the question space. It then encourages the MLLM to explore diverse reasoning paths across this expanded space and facilitates the sharing of discovered reasoning trajectories and their rewards among these question variants during the reinforcement learning process. This approach enables more effective exploration, denser reward signals, and more robust training. 
 
-\* *estimated*
+<div align=center>
+<img width="600" alt="image" src="figure/sharegrpo.png">
+</div>
 
-| Method                   | Bits |  1.5B  |   3B   |   7B   |   32B   |
-| ------------------------ | ---- | ------ | ------ | ------ | ------- |
-| GRPO Full Fine-Tuning    |  AMP | 2*24GB | 4*40GB | 8*40GB | 16*80GB |
-| GRPO Full Fine-Tuning    | BF16 | 1*24GB | 1*40GB | 4*40GB |  8*80GB |
+## 🚀 Training
 
-> [!NOTE]
-> Use `worker.actor.fsdp.torch_dtype=bf16` and `worker.actor.optim.strategy=adamw_bf16` to enable bf16 training.
->
-> We are working hard to reduce the VRAM in RL training, LoRA support will be integrated in next updates.
-
-## Tutorial: Run Qwen2.5-VL GRPO on [Geometry3K](https://huggingface.co/datasets/hiyouga/geometry3k) Dataset in Just 3 Steps
-
-![image](assets/qwen2_5_vl_7b_geo.png)
 
 ### Installation
-
 ```bash
-git clone https://github.com/hiyouga/EasyR1.git
-cd EasyR1
+git clone https://github.com/HJYao00/R1-ShareVL.git
+cd R1-ShareVL
 pip install -e .
 ```
 
-### Share-GRPO Training
+### GRPO Training
 
 ```bash
 bash examples/qwen2_5_vl_7b_sharegrpo.sh
@@ -83,18 +70,30 @@ bash examples/qwen2_5_vl_7b_sharegrpo.sh
 python3 scripts/model_merger.py --local_dir checkpoints/easy_r1/exp_name/global_step_1/actor
 ```
 
-> [!TIP]
-> If you encounter issues with connecting to Hugging Face, consider using `export HF_ENDPOINT=https://hf-mirror.com`.
->
-> If you want to use SwanLab logger, consider using `bash examples/qwen2_5_vl_7b_geo3k_swanlab.sh`.
+## 🚗 Evaluation
+We evaluate R1-ShareVL using [VLMEvalKit](https://github.com/open-compass/VLMEvalKit)! Please make sure to include a thinking prompt after the question [here](https://github.com/open-compass/VLMEvalKit/blob/main/vlmeval/vlm/qwen2_vl/model.py#L342).
 
-## Custom Dataset
+```bash
+R1_PROMPT = r"""You FIRST think about the reasoning process as an internal monologue and then provide the final answer.
+ The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \boxed{}."""
 
-Please refer to the example datasets to prepare your own dataset.
+item = {'type': 'text', 'text': s['value'] + " " + R1_PROMPT}
+```
 
-- Text dataset: https://huggingface.co/datasets/hiyouga/math12k
-- Vision-text dataset: https://huggingface.co/datasets/hiyouga/geometry3k
+## 🔗 Citation
+If you find this repository is useful, please star🌟 this repo and cite🖇️ our paper.
+```bibtex
+@misc{yao2025r1sharevl,
+      title={R1-ShareVL: Incentivizing Reasoning Capability of Multimodal Large Language Models via Share-GRPO}, 
+      author={Huanjin Yao and Qixiang Yin and Jingyi Zhang and Min Yang and Yibo Wang and Wenhao Wu and Fei Su and Li Shen and Minghui Qiu and Dacheng Tao and Jiaxing Huang},
+      year={2025},
+      eprint={2505.16673},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+}
+```
 
-> [!TIP]
-> EasyR1 already supports multi-image dataset.
-
+## 🙏 Acknowledgment
+Our work is primarily based on the following codebases. We are sincerely grateful for their work.
+- [EasyR1](https://github.com/hiyouga/EasyR1): We use EasyR1 to fine-tune R1-ShareVL Models.
+- [VLMEvalKit](https://github.com/open-compass/VLMEvalKit): We use VLMEvalKit for evaluation.
