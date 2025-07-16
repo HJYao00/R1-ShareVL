@@ -7,10 +7,8 @@
 <h5 align="center"> 
 
 <a href='https://arxiv.org/abs/2505.16673'><img src='https://img.shields.io/badge/Paper-Arxiv-red'></a>
-<!--
-<a href='https://huggingface.co/HuanjinYao/Mulberry_llava_8b'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue'>
-<a href='https://huggingface.co/datasets/HuanjinYao/Mulberry-SFT'><img src='https://img.shields.io/badge/Dataset-Huggingface-yellow'>
--->
+<a href='https://huggingface.co/HuanjinYao/R1-ShareVL-7B'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue'>
+<a href='https://huggingface.co/datasets/HuanjinYao/R1-ShareVL-52K'><img src='https://img.shields.io/badge/Dataset-Huggingface-yellow'>
 <!--<a href='https://huggingface.co/collections/HuanjinYao/denseconnector-66500e173fc8c9f05dc98dea'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue'></a>
 [![zhihu](https://img.shields.io/badge/-知乎-000000?logo=zhihu&logoColor=0084FF)](https://zhuanlan.zhihu.com/p/700000183)
 <a href='https://huggingface.co/spaces/HuanjinYao/DenseConnector-v1.5-8B'><img src='https://img.shields.io/badge/🤗-Open%20In%20Spaces-blue.svg'></a>-->
@@ -38,12 +36,51 @@
 </div>
 
 
-## News
+## 🎙️ News
+- [x] **`Jul 15, 2025.`** We release our [ShareGRPO Training code](), [52K Training Data]() and [R1-ShareVL-7B Model]()!
 - [x] **`May 23, 2025.`** We release our paper in [arxiv](https://arxiv.org/abs/2505.16673).
 
 
+## 💡 About R1-ShareVL
+We introduce Share-GRPO, a novel reinforcement learning framework for MLLMs that addresses the challenges of sparse rewards and advantage vanishing in reasoning tasks. For a given question, Share-GRPO first applies semantically consistent transformations to generate a set of varied but semantically equivalent questions, thereby expanding the question space. It then encourages the MLLM to explore diverse reasoning paths across this expanded space and facilitates the sharing of discovered reasoning trajectories and their rewards among these question variants during the reinforcement learning process. This approach enables more effective exploration, denser reward signals, and more robust training. 
 
-## Citation
+<div align=center>
+<img width="600" alt="image" src="figure/sharegrpo.png">
+</div>
+
+## 🚀 Training
+
+
+### Installation
+```bash
+git clone https://github.com/HJYao00/R1-ShareVL.git
+cd R1-ShareVL
+pip install -e .
+```
+
+### GRPO Training
+
+```bash
+bash examples/qwen2_5_vl_7b_sharegrpo.sh
+```
+
+### Merge Checkpoint in Hugging Face Format
+
+```bash
+python3 scripts/model_merger.py --local_dir checkpoints/easy_r1/exp_name/global_step_1/actor
+```
+
+## 🚗 Evaluation
+We evaluate R1-ShareVL using [VLMEvalKit](https://github.com/open-compass/VLMEvalKit)! Please make sure to include a thinking prompt after the question [here](https://github.com/open-compass/VLMEvalKit/blob/main/vlmeval/vlm/qwen2_vl/model.py#L342).
+
+```bash
+R1_PROMPT = r"""You FIRST think about the reasoning process as an internal monologue and then provide the final answer.
+ The reasoning process MUST BE enclosed within <think> </think> tags. The final answer MUST BE put in \boxed{}."""
+
+item = {'type': 'text', 'text': s['value'] + " " + R1_PROMPT}
+```
+
+## 🔗 Citation
 If you find this repository is useful, please star🌟 this repo and cite🖇️ our paper.
 ```bibtex
 @misc{yao2025r1sharevl,
@@ -55,3 +92,8 @@ If you find this repository is useful, please star🌟 this repo and cite🖇️
       primaryClass={cs.CV},
 }
 ```
+
+## 🙏 Acknowledgment
+Our work is primarily based on the following codebases. We are sincerely grateful for their work.
+- [EasyR1](https://github.com/hiyouga/EasyR1): We use EasyR1 to fine-tune R1-ShareVL Models.
+- [VLMEvalKit](https://github.com/open-compass/VLMEvalKit): We use VLMEvalKit for evaluation.
