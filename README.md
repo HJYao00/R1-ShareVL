@@ -37,6 +37,7 @@
 
 
 ## 🎙️ News
+- [x] **`Sep 19, 2025.`** **R1-Share** has been accepted at NeurIPS 2025!
 - [x] **`Jul 15, 2025.`** We release our [ShareGRPO Training code](), [52K Training Data](https://huggingface.co/datasets/HuanjinYao/R1-ShareVL-52K) and [R1-ShareVL-7B Model](https://huggingface.co/HuanjinYao/R1-ShareVL-7B)!
 - [x] **`May 23, 2025.`** We release our paper in [arxiv](https://arxiv.org/abs/2505.16673).
 
